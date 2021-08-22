@@ -7,8 +7,10 @@
  import cors from "cors";
  import helmet from "helmet";
  import { profilesRouter } from "./profiles/profiles.router";
- 
+//  import dbInit from "./db/init";
+
  dotenv.config();
+ 
 /**
  * App Variables
  */

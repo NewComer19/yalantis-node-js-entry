@@ -7,6 +7,7 @@
  import multer from 'multer';
 import { ImageUtil } from "../utils/image.util";
 
+
 const upload = multer({ dest: './resources/images' })
 /**
  * Router Definition
@@ -20,9 +21,9 @@ const upload = multer({ dest: './resources/images' })
 
 profilesRouter.get("/", async (req: Request, res: Response) => {
     try {
-      const profiles: Profile[] = await ProfileService.findAll();
+      const profiles = await ProfileService.findAll();
   
-      res.status(200).send(profiles);
+      res.status(200).send(JSON.stringify(profiles, null, 2));
     } catch (e) {
       res.status(500).send(e.message);
     }
@@ -34,10 +35,10 @@ profilesRouter.get("/:id", async (req: Request, res: Response) => {
     const id: number = parseInt(req.params.id, 10);
   
     try {
-      const profile: Profile = await ProfileService.find(id);
+      const profile = await ProfileService.find(id);
   
       if (profile) {
-        return res.status(200).send(profile);
+        return res.status(200).send(JSON.stringify(profile, null, 2));
       }
   
       res.status(404).send("profile not found");
@@ -63,7 +64,7 @@ profilesRouter.post("/", upload.single("avatar"), async (req: Request, res: Resp
 
       console.log("Creating new profile");
       profile.image = resizeImagePath;
-      const newProfile: Profile = await ProfileService.create(profile);
+      const newProfile = await ProfileService.create(profile);
   
       res.status(201).json({"id" : newProfile.id});
     } catch (e) {
